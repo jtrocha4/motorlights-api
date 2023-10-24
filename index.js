@@ -9,6 +9,7 @@ const Dataset = require('./models/Dataset')
 
 const municipalityController = require('./controllers/municipality')
 const departmentController = require('./controllers/department')
+const sellerController = require('./controllers/seller')
 
 app.use(cors())
 app.use(express.json())
@@ -91,6 +92,7 @@ app.post('/api/data', async (require, response) => {
 
 app.use('/', municipalityController)
 app.use('/', departmentController)
+app.use('/', sellerController)
 
 app.use((require, response) => {
   response.status(404).end()
