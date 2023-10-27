@@ -2,8 +2,13 @@ const mongoose = require('mongoose')
 const { Schema, model } = mongoose
 
 const municipalitySchema = new Schema({
-  nombre: String,
-  idDepartamento: String
+  nombre: {
+    type: String,
+    required: true
+  },
+  idDepartamento: {
+    type: String
+  }
 })
 
 municipalitySchema.set('toJSON', {
