@@ -10,7 +10,7 @@ router.get('/api/sellers', async (require, response) => {
     const data = await Seller.find({})
     response.json(data)
   } catch (error) {
-    response.status(404).json({ message: 'Error al obtener los datos' }).end()
+    response.status(404).json(error).end()
   }
 })
 
@@ -28,7 +28,7 @@ router.post('/api/sellers', async (require, response) => {
     const createSeller = await newData.save()
     response.status(201).json(createSeller)
   } catch (error) {
-    response.json({ message: error }).end()
+    response.status(400).json(error)
   }
 })
 
@@ -38,7 +38,7 @@ router.delete('/api/sellers/:id', async (require, response) => {
     const deleteData = await Seller.findByIdAndDelete(id)
     response.status(200).json(deleteData)
   } catch (error) {
-    response.json({ message: error }).end()
+    response.json(error).end()
   }
 })
 
@@ -56,7 +56,7 @@ router.put('/api/sellers/:id', async (require, response) => {
     const updateData = await Seller.findByIdAndUpdate(id, data, { new: true })
     response.status(200).json(updateData)
   } catch (error) {
-    response.json({ message: error }).end()
+    response.json(error).end()
   }
 })
 
