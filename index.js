@@ -5,11 +5,14 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 
-const Dataset = require('./models/Dataset')
+const SellerPerformance = require('./models/SellerPerformance')
 
 const municipalityController = require('./controllers/municipality')
 const departmentController = require('./controllers/department')
 const sellerController = require('./controllers/seller')
+const saleController = require('./controllers/sale')
+const productController = require('./controllers/product')
+const customerController = require('./controllers/customer')
 
 app.use(cors())
 app.use(express.json())
@@ -21,19 +24,28 @@ app.get('/', (require, response) => {
   `)
 })
 
-app.get('/api/data', async (require, response) => {
+app.get('/api/sellerPerformance', async (require, response) => {
   try {
-    const data = await Dataset.find({})
+    const data = await SellerPerformance.find({})
+      .populate('idVendedor', {
+        _id: 0,
+        fechaDeCreacion: 0,
+        estado: 0
+      })
     response.json(data)
   } catch (error) {
-    response.status(500).json({ message: 'Error al obtener los datos' }).end()
+    response.status(404).json({ message: 'Error al obtener los datos' }).end()
   }
 })
 
-app.get('/api/data/:id', async (require, response) => {
+app.get('/api/sellerPerformance/:sellerId', async (require, response) => {
   try {
-    const id = require.params.id
-    const data = await Dataset.findById(id)
+    const sellerId = require.params.sellerId
+    const data = await SellerPerformance.find({ idVendedor: sellerId }).populate('idVendedor', {
+      _id: 0,
+      fechaDeCreacion: 0,
+      estado: 0
+    })
     if (data) {
       response.json(data)
     } else {
@@ -44,10 +56,10 @@ app.get('/api/data/:id', async (require, response) => {
   }
 })
 
-app.get('/api/data/date/:date', async (require, response) => {
+app.get('/api/sellerPerformance/date/:date', async (require, response) => {
   try {
     const date = require.params.date
-    const data = await Dataset.find({ fecha: date })
+    const data = await SellerPerformance.find({ fecha: date })
     if (data) {
       response.json(data)
     } else {
@@ -58,33 +70,33 @@ app.get('/api/data/date/:date', async (require, response) => {
   }
 })
 
-app.post('/api/data', async (require, response) => {
+app.post('/api/sellerPerformance', async (require, response) => {
   try {
-    const data = require.body
-    const newData = new Dataset({
-      bonoResultado: data.bonoResultado,
-      cantidadFacturas: data.cantidadFacturas,
-      clientesNuevos: data.clientesNuevos,
-      comisionRecaudo: data.comisionRecaudo,
-      comisionTotal: data.comisionTotal,
-      comisionVenta: data.comisionVenta,
-      fecha: data.fecha,
-      margen: data.margen,
-      metaRecaudoSinIva: data.metaRecaudoSinIva,
-      metaVentas: data.metaVentas,
-      porcentajeMargen: data.porcentajeMargen,
-      porcentajeRecaudo: data.porcentajeRecaudo,
-      porcentajeVentas: data.porcentajeVentas,
-      promedioVentas: data.promedioVentas,
-      recaudoPendiente: data.recaudoPendiente,
-      totalCosto: data.totalCosto,
-      totalRecaudo: data.totalRecaudo,
-      totalVenta: data.totalVenta,
-      vendedor: data.vendedor,
-      ventasPendiente: data.ventasPendiente
+    const { bonoResultado, cantidadFacturas, clientesNuevos, comisionRecaudo, comisionTotal, comisionVenta, fecha, margen, metaRecaudoSinIva, metaVentas, porcentajeMargen, porcentajeRecaudo, porcentajeVentas, promedioVentas, recaudoPendiente, totalCosto, totalRecaudo, totalVenta, idVendedor, ventasPendiente } = require.body
+    const newData = new SellerPerformance({
+      bonoResultado,
+      cantidadFacturas,
+      clientesNuevos,
+      comisionRecaudo,
+      comisionTotal,
+      comisionVenta,
+      fecha,
+      margen,
+      metaRecaudoSinIva,
+      metaVentas,
+      porcentajeMargen,
+      porcentajeRecaudo,
+      porcentajeVentas,
+      promedioVentas,
+      recaudoPendiente,
+      totalCosto,
+      totalRecaudo,
+      totalVenta,
+      idVendedor,
+      ventasPendiente
     })
     const createData = await newData.save()
-    response.status(200).json(createData)
+    response.json(createData)
   } catch (error) {
     response.json({ message: error }).end()
   }
@@ -93,6 +105,9 @@ app.post('/api/data', async (require, response) => {
 app.use('/', municipalityController)
 app.use('/', departmentController)
 app.use('/', sellerController)
+app.use('/', saleController)
+app.use('/', productController)
+app.use('/', customerController)
 
 app.use((require, response) => {
   response.status(404).end()
