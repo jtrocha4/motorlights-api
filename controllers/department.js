@@ -5,7 +5,7 @@ const router = express.Router()
 
 const Department = require('../models/Department')
 
-router.get('/api/department', async (require, response) => {
+router.get('/api/departments', async (require, response) => {
   try {
     const data = await Department.find({}).populate('municipios', {
       nombre: 1,
@@ -13,11 +13,11 @@ router.get('/api/department', async (require, response) => {
     })
     response.json(data)
   } catch (error) {
-    response.status(500).json({ message: 'Error al obtener los datos' }).end()
+    response.status(404).json({ message: 'Error al obtener los datos' }).end()
   }
 })
 
-router.post('/api/department', async (require, response) => {
+router.post('/api/departments', async (require, response) => {
   try {
     const { nombre, municipios = [] } = require.body
     const newData = new Department({
@@ -25,7 +25,7 @@ router.post('/api/department', async (require, response) => {
       municipios
     })
     const createDepartment = await newData.save()
-    response.status(200).json(createDepartment)
+    response.status(201).json(createDepartment)
   } catch (error) {
     response.json({ message: error }).end()
   }

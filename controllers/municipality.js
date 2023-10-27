@@ -6,16 +6,16 @@ const router = express.Router()
 const Municipality = require('../models/Municipality')
 const Department = require('../models/Department')
 
-router.get('/api/municipality', async (require, response) => {
+router.get('/api/municipalities', async (require, response) => {
   try {
     const data = await Municipality.find({})
     response.json(data)
   } catch (error) {
-    response.status(500).json({ message: 'Error al obtener los datos' }).end()
+    response.status(404).json({ message: 'Error al obtener los datos' }).end()
   }
 })
 
-router.post('/api/municipality', async (require, response) => {
+router.post('/api/municipalities', async (require, response) => {
   try {
     const { nombre, idDepartamento } = require.body
 
@@ -30,7 +30,7 @@ router.post('/api/municipality', async (require, response) => {
     department.municipios = department.municipios.concat(createMunicipality._id)
     await department.save()
 
-    response.status(200).json(createMunicipality)
+    response.status(201).json(createMunicipality)
   } catch (error) {
     response.json({ message: error }).end()
   }
