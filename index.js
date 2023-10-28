@@ -96,9 +96,9 @@ app.post('/api/sellerPerformance', async (require, response) => {
       ventasPendiente
     })
     const createData = await newData.save()
-    response.json(createData)
+    response.status(201).json(createData)
   } catch (error) {
-    response.json({ message: error }).end()
+    response.status(400).json(error).end()
   }
 })
 
