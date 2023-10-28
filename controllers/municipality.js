@@ -32,7 +32,7 @@ router.post('/api/municipalities', async (require, response) => {
 
     response.status(201).json(createMunicipality)
   } catch (error) {
-    response.json({ message: error }).end()
+    response.status(400).json(error).end()
   }
 })
 

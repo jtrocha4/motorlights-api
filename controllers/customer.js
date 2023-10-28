@@ -28,9 +28,9 @@ router.post('/api/customer', async (require, response) => {
       fechaDeCreacion
     })
     const createCustomer = await newData.save()
-    response.status(200).json(createCustomer)
+    response.status(201).json(createCustomer)
   } catch (error) {
-    response.status(201).json({ message: error }).end()
+    response.status(400).json(error).end()
   }
 })
 

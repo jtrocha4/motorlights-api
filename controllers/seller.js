@@ -28,7 +28,7 @@ router.post('/api/sellers', async (require, response) => {
     const createSeller = await newData.save()
     response.status(201).json(createSeller)
   } catch (error) {
-    response.status(400).json(error)
+    response.status(400).json(error).end()
   }
 })
 

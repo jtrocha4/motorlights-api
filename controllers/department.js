@@ -27,7 +27,7 @@ router.post('/api/departments', async (require, response) => {
     const createDepartment = await newData.save()
     response.status(201).json(createDepartment)
   } catch (error) {
-    response.json({ message: error }).end()
+    response.status(400).json(error).end()
   }
 })
 
