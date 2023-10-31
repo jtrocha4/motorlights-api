@@ -28,7 +28,7 @@ app.get('/api/sellerPerformance', async (require, response) => {
   try {
     const data = await SellerPerformance.find({})
       .populate('idVendedor', {
-        _id: 0,
+        _id: 1,
         fechaDeCreacion: 0,
         estado: 0
       })
@@ -42,7 +42,7 @@ app.get('/api/sellerPerformance/:sellerId', async (require, response) => {
   try {
     const sellerId = require.params.sellerId
     const data = await SellerPerformance.find({ idVendedor: sellerId }).populate('idVendedor', {
-      _id: 0,
+      _id: 1,
       fechaDeCreacion: 0,
       estado: 0
     })
