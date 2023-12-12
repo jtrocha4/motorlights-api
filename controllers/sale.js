@@ -31,13 +31,15 @@ router.get('/api/sales', async (require, response) => {
 
 router.post('/api/sales', async (require, response) => {
   try {
-    const { codigoDeFactura, fecha, idVendedor, idCliente, idProducto, metodoDePago, cantidad, valorUnitario, ventaBruta, descuento, ventaNeta, iva, valorTotal, fechaDeCreacion } = require.body
+    const { codigoDeFactura, fecha, mes, anio, idVendedor, idCliente, idProducto, metodoDePago, cantidad, valorUnitario, ventaBruta, descuento, ventaNeta, iva, valorTotal, fechaDeCreacion } = require.body
 
     const newData = new Sale({
       cantidad,
       codigoDeFactura,
       descuento,
       fecha,
+      mes,
+      anio,
       fechaDeCreacion,
       idVendedor,
       idCliente,
