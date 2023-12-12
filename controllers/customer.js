@@ -5,7 +5,7 @@ const router = express.Router()
 
 const Customer = require('../models/Customer')
 
-router.get('/api/customer', async (require, response) => {
+router.get('/api/customers', async (require, response) => {
   try {
     const data = await Customer.find({})
     response.json(data)
@@ -14,7 +14,7 @@ router.get('/api/customer', async (require, response) => {
   }
 })
 
-router.post('/api/customer', async (require, response) => {
+router.post('/api/customers', async (require, response) => {
   try {
     const { identificacion, nombre, telefono, departamento, municipio, direccion, estado, fechaDeCreacion } = require.body
     const newData = new Customer({
