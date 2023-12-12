@@ -10,6 +10,14 @@ const saleSchema = new Schema({
     type: Date,
     required: true
   },
+  mes: {
+    type: Number,
+    required: true
+  },
+  anio: {
+    type: Number,
+    required: true
+  },
   idVendedor: {
     type: Schema.Types.ObjectId,
     ref: 'Seller',
