@@ -16,12 +16,14 @@ router.get('/api/sellers', async (require, response) => {
 
 router.post('/api/sellers', async (require, response) => {
   try {
-    const { nombre, identificacion, estado, fechaDeCreacion } = require.body
+    const { nombre, identificacion, metaRecaudo, metaVentas ,estado, fechaDeCreacion } = require.body
 
     const newData = new Seller({
       estado,
       fechaDeCreacion,
       identificacion,
+      metaRecaudo,
+      metaVentas,
       nombre
     })
 
@@ -45,11 +47,13 @@ router.delete('/api/sellers/:id', async (require, response) => {
 router.put('/api/sellers/:id', async (require, response) => {
   try {
     const id = require.params.id
-    const { nombre, identificacion, estado = 1 } = require.body
+    const { nombre, identificacion, metaRecaudo, metaVentas, estado = 1 } = require.body
 
     const data = {
       nombre,
       identificacion,
+      metaRecaudo,
+      metaVentas,
       estado
     }
 
