@@ -10,6 +10,14 @@ const sellerSchema = new Schema({
     type: String,
     required: true
   },
+  metaRecaudo:{
+    type: Number,
+    required: true
+  },
+  metaVentas:{
+    type: Number,
+    required: true
+  },
   // telefono: {
   //   type: Number,
   //   required: true
