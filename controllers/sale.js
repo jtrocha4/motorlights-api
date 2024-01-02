@@ -59,4 +59,29 @@ router.post('/api/sales', async (require, response) => {
   }
 })
 
+router.get('/api/sales/:idSeller', async (require, response) => {
+  try {
+    const idSeller = require.params.idSeller
+    const data = await Sale.find({ idVendedor: idSeller })
+      .populate('idVendedor', {
+        _id: 0,
+        fechaDeCreacion: 0,
+        estado: 0
+      })
+      .populate('idProducto', {
+        _id: 0,
+        fechaDeCreacion: 0,
+        estado: 0
+      })
+      .populate('idCliente', {
+        _id: 0,
+        fechaDeCreacion: 0,
+        estado: 0
+      })
+    response.json(data)
+  } catch (error) {
+    express.response.status(400).json(error).end()
+  }
+})
+
 module.exports = router
