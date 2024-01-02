@@ -16,7 +16,7 @@ router.get('/api/sellers', async (require, response) => {
 
 router.post('/api/sellers', async (require, response) => {
   try {
-    const { nombre, identificacion, metaRecaudo, metaVentas ,estado, fechaDeCreacion } = require.body
+    const { nombre, identificacion, metaRecaudo, metaVentas, estado, fechaDeCreacion } = require.body
 
     const newData = new Seller({
       estado,
