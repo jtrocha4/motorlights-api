@@ -13,6 +13,7 @@ const sellerController = require('./controllers/seller')
 const saleController = require('./controllers/sale')
 const productController = require('./controllers/product')
 const customerController = require('./controllers/customer')
+const userController = require('./controllers/user')
 
 app.use(cors())
 app.use(express.json())
@@ -108,6 +109,7 @@ app.use('/', sellerController)
 app.use('/', saleController)
 app.use('/', productController)
 app.use('/', customerController)
+app.use('/api/users', userController)
 
 app.use((require, response) => {
   response.status(404).end()
