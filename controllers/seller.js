@@ -4,6 +4,7 @@ const express = require('express')
 const router = express.Router()
 
 const Seller = require('../models/Seller')
+const User = require('../models/User')
 
 router.get('/api/sellers', async (require, response) => {
   try {
@@ -16,7 +17,9 @@ router.get('/api/sellers', async (require, response) => {
 
 router.post('/api/sellers', async (require, response) => {
   try {
-    const { nombre, identificacion, metaRecaudo, metaVentas, estado, fechaDeCreacion } = require.body
+    const { nombre, identificacion, metaRecaudo, metaVentas, idUsuario, estado, fechaDeCreacion } = require.body
+
+    const user = await User.findById(idUsuario)
 
     const newData = new Seller({
       estado,
@@ -24,10 +27,13 @@ router.post('/api/sellers', async (require, response) => {
       identificacion,
       metaRecaudo,
       metaVentas,
-      nombre
+      nombre,
+      idUsuario: user._id
     })
 
     const createSeller = await newData.save()
+    user.vendedores = user.vendedores.concat(createSeller._id)
+    await user.save()
     response.status(201).json(createSeller)
   } catch (error) {
     response.status(400).json(error).end()
