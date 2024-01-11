@@ -10,11 +10,11 @@ const sellerSchema = new Schema({
     type: String,
     required: true
   },
-  metaRecaudo:{
+  metaRecaudo: {
     type: Number,
     required: true
   },
-  metaVentas:{
+  metaVentas: {
     type: Number,
     required: true
   },
@@ -26,6 +26,10 @@ const sellerSchema = new Schema({
   //   type: String,
   //   required: true
   // },
+  idUsuario: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
   estado: {
     type: Boolean,
     default: true,
