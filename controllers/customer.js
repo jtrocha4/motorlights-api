@@ -10,7 +10,7 @@ router.get('/api/customers', async (require, response) => {
     const data = await Customer.find({})
     response.json(data)
   } catch (error) {
-    response.status(404).json({ message: 'Error al obtener los datos' }).end()
+    response.status(404).json(error).end()
   }
 })
 
