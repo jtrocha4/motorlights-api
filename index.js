@@ -14,6 +14,7 @@ const saleController = require('./controllers/sale')
 const productController = require('./controllers/product')
 const customerController = require('./controllers/customer')
 const userController = require('./controllers/user')
+const loginController = require('./controllers/login')
 
 app.use(cors())
 app.use(express.json())
@@ -35,7 +36,7 @@ app.get('/api/sellerPerformance', async (require, response) => {
       })
     response.json(data)
   } catch (error) {
-    response.status(404).json({ message: 'Error al obtener los datos' }).end()
+    response.status(404).json(error).end()
   }
 })
 
@@ -110,6 +111,7 @@ app.use('/', saleController)
 app.use('/', productController)
 app.use('/', customerController)
 app.use('/api/users', userController)
+app.use('/api/login', loginController)
 
 app.use((require, response) => {
   response.status(404).end()
