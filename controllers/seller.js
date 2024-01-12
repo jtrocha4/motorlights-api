@@ -1,4 +1,5 @@
 require('../mongo')
+const jwt = require('jsonwebtoken')
 
 const express = require('express')
 const router = express.Router()
@@ -8,7 +9,10 @@ const User = require('../models/User')
 
 router.get('/api/sellers', async (require, response) => {
   try {
-    const data = await Seller.find({})
+    const data = await Seller.find({}).populate('usuario', {
+      nombreUsuario: 1,
+      nombre: 1
+    })
     response.json(data)
   } catch (error) {
     response.status(404).json(error).end()
@@ -17,9 +21,29 @@ router.get('/api/sellers', async (require, response) => {
 
 router.post('/api/sellers', async (require, response) => {
   try {
-    const { nombre, identificacion, metaRecaudo, metaVentas, idUsuario, estado, fechaDeCreacion } = require.body
+    const { nombre, identificacion, metaRecaudo, metaVentas, estado, fechaDeCreacion } = require.body
 
-    const user = await User.findById(idUsuario)
+    const authorization = require.get('authorization')
+    let token = null
+    let decodedToken
+
+    if (authorization && authorization.toLowerCase().startsWith('bearer')) {
+      token = authorization.substring(7)
+    }
+
+    if (token !== null) {
+      decodedToken = jwt.verify(
+        token,
+        process.env.SECRETKEY, {
+          expiresIn: 60 * 60 * 24 * 7
+        })
+    }
+
+    if (!token || !decodedToken.id) {
+      return response.status(401).json({ error: 'token missing or invalid' })
+    }
+
+    const user = await User.findById(decodedToken.id)
 
     const newData = new Seller({
       estado,
@@ -28,7 +52,7 @@ router.post('/api/sellers', async (require, response) => {
       metaRecaudo,
       metaVentas,
       nombre,
-      idUsuario: user._id
+      usuario: user._id
     })
 
     const createSeller = await newData.save()
