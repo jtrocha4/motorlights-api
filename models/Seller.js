@@ -26,7 +26,7 @@ const sellerSchema = new Schema({
   //   type: String,
   //   required: true
   // },
-  idUsuario: {
+  usuario: {
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
