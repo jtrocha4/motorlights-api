@@ -28,13 +28,10 @@ loginRouter.post('/', async (require, response) => {
       const token = jwt.sign(userForToken, process.env.SECRETKEY)
 
       response.status(200).json({
-        message: 'login successful',
-        data: {
-          id: user._id,
-          nombreUsuario: user.nombreUsuario,
-          nombre: user.nombre,
-          token
-        }
+        id: user._id,
+        nombreUsuario: user.nombreUsuario,
+        nombre: user.nombre,
+        token
       })
     }
   } catch (error) {
