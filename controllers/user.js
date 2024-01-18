@@ -8,13 +8,11 @@ const User = require('../models/User')
 
 router.get('/', async (require, response) => {
   try {
-    const data = await User.find({}).populate('vendedores', {
-      nombre: 1,
-      identificacion: 1,
-      metaRecaudo: 1,
-      metaVentas: 1,
-      _id: 0
-    })
+    const data = await User.find({})
+      .populate('vendedores')
+      .populate('clientes')
+      .populate('productos')
+      .populate('ventas')
     response.json(data)
   } catch (error) {
     response.status(404).json(error).end()
