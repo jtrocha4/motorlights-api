@@ -18,6 +18,18 @@ const userSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Seller'
   }],
+  productos: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Product'
+  }],
+  clientes: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Customer'
+  }],
+  ventas: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Sale'
+  }],
   estado: {
     type: Boolean,
     default: true,
