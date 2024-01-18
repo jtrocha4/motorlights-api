@@ -26,6 +26,10 @@ const customerSchema = new Schema({
     type: String,
     required: true
   },
+  usuario: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
   estado: {
     type: Boolean,
     default: true,
