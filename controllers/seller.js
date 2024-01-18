@@ -1,5 +1,5 @@
 require('../mongo')
-const jwt = require('jsonwebtoken')
+const authorizationVerification = require('./requiredAuthorization')
 
 const express = require('express')
 const router = express.Router()
@@ -7,9 +7,10 @@ const router = express.Router()
 const Seller = require('../models/Seller')
 const User = require('../models/User')
 
-router.get('/api/sellers', async (require, response) => {
+router.get('/api/sellers', authorizationVerification, async (require, response) => {
+  const userId = require.userId
   try {
-    const data = await Seller.find({}).populate('usuario', {
+    const data = await Seller.find({ usuario: userId }).populate('usuario', {
       nombreUsuario: 1,
       nombre: 1
     })
@@ -19,31 +20,13 @@ router.get('/api/sellers', async (require, response) => {
   }
 })
 
-router.post('/api/sellers', async (require, response) => {
+router.post('/api/sellers', authorizationVerification, async (require, response) => {
   try {
     const { nombre, identificacion, metaRecaudo, metaVentas, estado, fechaDeCreacion } = require.body
 
-    const authorization = require.get('authorization')
-    let token = null
-    let decodedToken
+    const userId = require.userId
 
-    if (authorization && authorization.toLowerCase().startsWith('bearer')) {
-      token = authorization.substring(7)
-    }
-
-    if (token !== null) {
-      decodedToken = jwt.verify(
-        token,
-        process.env.SECRETKEY, {
-          expiresIn: 60 * 60 * 24 * 7
-        })
-    }
-
-    if (!token || !decodedToken.id) {
-      return response.status(401).json({ error: 'token missing or invalid' })
-    }
-
-    const user = await User.findById(decodedToken.id)
+    const user = await User.findById(userId)
 
     const newData = new Seller({
       estado,
@@ -64,17 +47,17 @@ router.post('/api/sellers', async (require, response) => {
   }
 })
 
-router.delete('/api/sellers/:id', async (require, response) => {
+router.delete('/api/sellers/:id', authorizationVerification, async (require, response) => {
   try {
     const id = require.params.id
     const deleteData = await Seller.findByIdAndDelete(id)
     response.status(200).json(deleteData)
   } catch (error) {
-    response.json(error).end()
+    response.status(400).json(error).end()
   }
 })
 
-router.put('/api/sellers/:id', async (require, response) => {
+router.put('/api/sellers/:id', authorizationVerification, async (require, response) => {
   try {
     const id = require.params.id
     const { nombre, identificacion, metaRecaudo, metaVentas, estado = 1 } = require.body
