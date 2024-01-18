@@ -66,6 +66,10 @@ const saleSchema = new Schema({
     type: Number,
     required: true
   },
+  usuario: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
   estado: {
     type: Boolean,
     default: true,
