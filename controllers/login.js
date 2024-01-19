@@ -25,13 +25,27 @@ loginRouter.post('/', async (require, response) => {
         nombreUsuario: user.nombreUsuario,
         nombre: user.nombre
       }
-      const token = jwt.sign(userForToken, process.env.SECRETKEY)
+      const token = jwt.sign(
+        userForToken,
+        process.env.SECRETKEY,
+        {
+          expiresIn: 60 * 60 * 24 * 7
+        }
+      )
+
+      const decodedToken = jwt.verify(
+        token,
+        process.env.SECRETKEY
+      )
+
+      const expiredToken = new Date(decodedToken.exp * 1000)
 
       response.status(200).json({
         id: user._id,
         nombreUsuario: user.nombreUsuario,
         nombre: user.nombre,
-        token
+        token,
+        expiredToken
       })
     }
   } catch (error) {
