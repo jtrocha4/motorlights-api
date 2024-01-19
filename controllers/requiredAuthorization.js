@@ -9,20 +9,23 @@ const authorizationVerification = (require, response, next) => {
     token = authorization.substring(7)
   }
 
-  if (token !== null) {
-    decodedToken = jwt.verify(
-      token,
-      process.env.SECRETKEY, {
-        expiresIn: 60 * 60 * 24 * 7
-      })
+  try {
+    if (token !== null) {
+      decodedToken = jwt.verify(
+        token,
+        process.env.SECRETKEY
+      )
+    }
+    require.userId = decodedToken.id
+    next()
+  } catch (error) {
+    if (error instanceof jwt.TokenExpiredError) {
+      return response.status(401).json({ error: 'authorization required, token has expired' })
+    }
+    if (!token || !decodedToken.id) {
+      return response.status(401).json({ error: 'authorization is required, token missing or invalid' })
+    }
   }
-
-  if (!token || !decodedToken.id) {
-    return response.status(401).json({ error: 'authorization is required, token missing or invalid' })
-  }
-
-  require.userId = decodedToken.id
-  next()
 }
 
 module.exports = authorizationVerification
