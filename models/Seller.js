@@ -18,6 +18,10 @@ const sellerSchema = new Schema({
     type: Number,
     required: true
   },
+  metaClientesDePortafolio: {
+    type: Number,
+    required: true
+  },
   // telefono: {
   //   type: Number,
   //   required: true
