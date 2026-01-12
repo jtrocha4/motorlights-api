@@ -22,7 +22,7 @@ router.get('/api/sellers', authorizationVerification, async (require, response) 
 
 router.post('/api/sellers', authorizationVerification, async (require, response) => {
   try {
-    const { nombre, identificacion, metaRecaudo, metaVentas, estado, fechaDeCreacion } = require.body
+    const { nombre, identificacion, metaRecaudo, metaVentas, metaClientesDePortafolio, estado, fechaDeCreacion } = require.body
 
     const userId = require.userId
 
@@ -34,6 +34,7 @@ router.post('/api/sellers', authorizationVerification, async (require, response)
       identificacion,
       metaRecaudo,
       metaVentas,
+      metaClientesDePortafolio,
       nombre,
       usuario: user._id
     })
@@ -60,13 +61,14 @@ router.delete('/api/sellers/:id', authorizationVerification, async (require, res
 router.put('/api/sellers/:id', authorizationVerification, async (require, response) => {
   try {
     const id = require.params.id
-    const { nombre, identificacion, metaRecaudo, metaVentas, estado = 1 } = require.body
+    const { nombre, identificacion, metaRecaudo, metaVentas, metaClientesDePortafolio, estado = 1 } = require.body
 
     const data = {
       nombre,
       identificacion,
       metaRecaudo,
       metaVentas,
+      metaClientesDePortafolio,
       estado
     }
 
