@@ -22,7 +22,8 @@ router.get('/api/sellers', authorizationVerification, async (require, response) 
 
 router.post('/api/sellers', authorizationVerification, async (require, response) => {
   try {
-    const { nombre, identificacion, metaRecaudo, metaVentas, metaClientesDePortafolio, estado, fechaDeCreacion } = require.body
+    // const { nombre, identificacion, metaRecaudo, metaVentas, metaClientesDePortafolio, estado, fechaDeCreacion } = require.body
+    const { nombre, identificacion, metaRecaudo, metaVentas, metaClientesDePortafolio, estado = 1 } = require.body
 
     const userId = require.userId
 
@@ -30,7 +31,6 @@ router.post('/api/sellers', authorizationVerification, async (require, response)
 
     const newData = new Seller({
       estado,
-      fechaDeCreacion,
       identificacion,
       metaRecaudo,
       metaVentas,
