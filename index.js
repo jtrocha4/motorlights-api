@@ -15,6 +15,7 @@ const productController = require('./controllers/product')
 const customerController = require('./controllers/customer')
 const userController = require('./controllers/user')
 const loginController = require('./controllers/login')
+const InventoryTurnoverController = require('./controllers/inventoryTurnover')
 
 app.use(cors())
 app.use(express.json())
@@ -112,6 +113,7 @@ app.use('/', productController)
 app.use('/', customerController)
 app.use('/api/users', userController)
 app.use('/api/login', loginController)
+app.use('/', InventoryTurnoverController)
 
 app.use((require, response) => {
   response.status(404).end()
