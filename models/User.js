@@ -30,6 +30,10 @@ const userSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Sale'
   }],
+  rotacionInventario: [{
+    type: Schema.Types.ObjectId,
+    ref: 'InventoryTurnover'
+  }],
   estado: {
     type: Boolean,
     default: true,
