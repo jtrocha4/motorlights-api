@@ -6,7 +6,7 @@ const inventoryTurnoverSchema = new Schema({
     type: String,
     required: true
   },
-  id: {
+  codigo: {
     type: String,
     required: true
   },
