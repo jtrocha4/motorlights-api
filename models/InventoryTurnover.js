@@ -10,8 +10,14 @@ const inventoryTurnoverSchema = new Schema({
     type: String,
     required: true
   },
-  meta: {
-    type: Number,
+  categoriaMotos: {
+    type: Boolean,
+    default: false,
+    required: true
+  },
+  categoriaCarros: {
+    type: Boolean,
+    default: false,
     required: true
   },
   usuario: {
