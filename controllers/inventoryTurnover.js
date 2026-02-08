@@ -22,7 +22,7 @@ router.get('/api/invetoryTurnover', authorizationVerification, async (require, r
 
 router.post('/api/invetoryTurnover', authorizationVerification, async (require, response) => {
   try {
-    const { nombre, codigo, meta = 0 } = require.body
+    const { nombre, codigo, categoriaMotos, categoriaCarros } = require.body
 
     const userId = require.userId
 
@@ -31,8 +31,9 @@ router.post('/api/invetoryTurnover', authorizationVerification, async (require, 
     const newData = new InventoryTurnover({
       nombre,
       codigo,
-      meta,
-      usuario: user._id
+      usuario: user._id,
+      categoriaMotos,
+      categoriaCarros
     })
 
     const createInventoryTurnover = await newData.save()
@@ -57,12 +58,13 @@ router.delete('/api/invetoryTurnover/:id', authorizationVerification, async (req
 router.put('/api/invetoryTurnover/:id', authorizationVerification, async (require, response) => {
   try {
     const id = require.params.id
-    const { nombre, codigo, meta = 0 } = require.body
+    const { nombre, codigo, categoriaMotos, categoriaCarros } = require.body
 
     const data = {
       nombre,
       codigo,
-      meta
+      categoriaMotos,
+      categoriaCarros
     }
 
     const updateData = await InventoryTurnover.findByIdAndUpdate(id, data, { new: true })
